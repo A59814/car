@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<meta name="theme-color" content="#F8FAFC">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>سوق السيارات الجزائري | AutoDz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Tifinagh&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* الألوان الزاهية والمريحة */
+  --bg:#F8FAFC;
+  --surface:#FFFFFF;
+  --surface-hover:#F1F5F9;
+  --text:#1E293B;
+  --muted:#64748B;
+  --border:#E2E8F0;
+  
+  --primary:#2563EB;
+  --primary-hover:#1D4ED8;
+  --accent:#F97316;
+  --accent-hover:#EA580C;
+  --danger:#EF4444;
+  --ok:#10B981;
+
+  --r:16px;
+  --shadow:0 4px 20px rgba(15,23,42,.05);
+  --shadow-lg:0 10px 30px rgba(15,23,42,.1);
+}
+html{scroll-behavior:smooth}
+html[lang="ar"] body{font-family:'Cairo',sans-serif}
+html[lang="zgh"] body{font-family:'Noto Sans Tifinagh','Inter',sans-serif}
+html[lang="fr"] body,html[lang="en"] body{font-family:'Inter',sans-serif}
+html[lang="zh"] body{font-family:'Noto Sans SC',sans-serif}
+
+body{
+  background:var(--bg);
+  color:var(--text); min-height:100vh; line-height:1.6;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+
+/* ─── Header ─── */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.topbar-inner{
+  max-width:1200px;margin:0 auto;padding:16px 20px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:20px;color:var(--primary)}
+.brand-logo{
+  width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(135deg,var(--primary),#3B82F6);
+  display:grid;place-items:center;font-size:20px;color:#fff;
+  box-shadow:0 4px 12px rgba(37,99,235,.3);
+}
+.search{flex:1;min-width:200px;position:relative;order:3}
+.search input{
+  width:100%;padding:14px 48px 14px 20px;border-radius:50px;
+  border:1px solid var(--border);background:var(--surface);
+  outline:none;transition:.2s;font-size:15px;box-shadow:var(--shadow);
+}
+.search input:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 4px rgba(37,99,235,.1);
+}
+.search-ico{
+  position:absolute;inset-inline-end:20px;top:50%;transform:translateY(-50%);
+  color:var(--muted);pointer-events:none;font-size:18px;
+}
+.nav{display:flex;align-items:center;gap:12px;order:2;flex-wrap:wrap}
+.icon-btn{
+  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  color:var(--muted);transition:.2s;font-size:20px;background:var(--surface);box-shadow:var(--shadow);
+}
+.icon-btn:hover{color:var(--primary);background:var(--surface-hover)}
+.icon-btn.active{color:#fff;background:var(--primary)}
+.badge-count{
+  position:absolute;top:-4px;inset-inline-end:-4px;
+  background:var(--accent);color:#fff;font-size:11px;font-weight:800;
+  min-width:20px;height:20px;border-radius:10px;display:grid;place-items:center;padding:0 5px;
+  border:2px solid var(--surface);
+}
+.lang-select{
+  padding:10px 16px;border-radius:50px;border:1px solid var(--border);
+  background:var(--surface);font-size:14px;font-weight:700;color:var(--text);
+  cursor:pointer;outline:none;box-shadow:var(--shadow);
+}
+.btn-add{
+  padding:12px 24px;border-radius:50px;font-weight:800;font-size:15px;
+  background:var(--accent);color:#fff;box-shadow:0 4px 16px rgba(249,115,22,.3);
+  transition:.2s;display:flex;align-items:center;gap:8px;
+}
+.btn-add:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 6px 20px rgba(249,115,22,.4)}
+
+/* ─── Main Container ─── */
+.container{max-width:1200px;margin:0 auto;padding:24px 20px 100px}
+
+/* ─── Quick Filters (Chips) ─── */
+.filters-scroll{
+  display:flex;gap:10px;overflow-x:auto;padding-bottom:12px;margin-bottom:16px;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.filters-scroll::-webkit-scrollbar{display:none}
+.chip{
+  padding:10px 18px;border-radius:50px;border:1px solid var(--border);
+  background:var(--surface);color:var(--text);font-size:14px;font-weight:700;
+  white-space:nowrap;cursor:pointer;transition:.2s;box-shadow:var(--shadow);
+  display:flex;align-items:center;gap:6px;
+}
+.chip:hover{border-color:var(--primary);color:var(--primary)}
+.chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* ─── Grid & Cards ─── */
+.results-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.count{color:var(--muted);font-size:15px;font-weight:600}
+.sort-select{
+  padding:10px 16px;border-radius:12px;border:1px solid var(--border);
+  background:var(--surface);font-size:14px;font-weight:700;outline:none;cursor:pointer;
+}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+
+.card{
+  background:var(--surface);border-radius:var(--r);overflow:hidden;
+  box-shadow:var(--shadow);cursor:pointer;transition:.3s cubic-bezier(.2,.8,.2,1);
+  border:1px solid transparent;position:relative;display:flex;flex-direction:column;
+}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--border)}
+.card-img{position:relative;aspect-ratio:4/3;background:#F1F5F9;overflow:hidden}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.card:hover .card-img img{transform:scale(1.05)}
+.price-tag{
+  position:absolute;bottom:12px;inset-inline-end:12px;
+  background:var(--surface);color:var(--primary);
+  padding:8px 14px;border-radius:12px;font-weight:900;font-size:16px;
+  box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+.new-badge{
+  position:absolute;top:12px;inset-inline-start:12px;
+  background:var(--accent);color:#fff;font-size:12px;font-weight:800;
+  padding:6px 12px;border-radius:8px;box-shadow:0 4px 12px rgba(249,115,22,.3);
+}
+.card-body{padding:20px;display:flex;flex-direction:column;flex:1}
+.card-body h3{font-size:18px;font-weight:800;margin-bottom:6px;color:var(--text)}
+.meta{font-size:14px;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dot{width:4px;height:4px;border-radius:50%;background:var(--muted)}
+.card-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:16px;border-top:1px solid var(--border);margin-top:auto;
+}
+.city-label{font-size:14px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px}
+.fav-btn{
+  width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+  font-size:18px;color:var(--muted);transition:.2s;background:var(--bg);
+}
+.fav-btn:hover{background:var(--surface-hover);color:var(--danger)}
+.fav-btn.on{color:var(--danger);background:#FEE2E2}
+
+/* ─── Bottom Sheet (Filters) ─── */
+.overlay{
+  position:fixed;inset:0;background:rgba(15,23,42,.4);
+  backdrop-filter:blur(4px);z-index:90;opacity:0;pointer-events:none;transition:.3s;
+}
+.overlay.open{opacity:1;pointer-events:auto}
+.bottom-sheet{
+  position:fixed;bottom:0;left:0;right:0;background:var(--surface);
+  border-radius:24px 24px 0 0;z-index:100;padding:24px 20px 40px;
+  transform:translateY(100%);transition:.3s cubic-bezier(.2,.8,.2,1);
+  box-shadow:0 -10px 40px rgba(0,0,0,.1);max-height:85vh;overflow-y:auto;
+}
+.bottom-sheet.open{transform:translateY(0)}
+.sheet-handle{width:40px;height:5px;border-radius:3px;background:var(--border);margin:0 auto 20px}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.sheet-head h3{font-size:20px;font-weight:800}
+.sheet-close{font-size:24px;color:var(--muted);cursor:pointer}
+.filter-group{margin-bottom:20px}
+.filter-group label{display:block;font-size:14px;font-weight:700;color:var(--muted);margin-bottom:8px}
+.filter-group select,.filter-group input{
+  width:100%;padding:14px;border-radius:12px;border:1px solid var(--border);
+  background:var(--bg);font-size:15px;font-weight:600;outline:none;transition:.2s;
+}
+.filter-group select:focus,.filter-group input:focus{border-color:var(--primary);background:var(--surface)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sheet-actions{display:flex;gap:12px;margin-top:30px}
+.btn-outline{
+  flex:1;padding:14px;border-radius:12px;border:2px solid var(--border);
+  font-weight:800;font-size:16px;color:var(--text);background:var(--surface);transition:.2s;
+}
+.btn-outline:hover{background:var(--surface-hover)}
+.btn-solid{
+  flex:2;padding:14px;border-radius:12px;background:var(--primary);
+  color:#fff;font-weight:800;font-size:16px;transition:.2s;
+}
+.btn-solid:hover{background:var(--primary-hover)}
+
+/* ─── Modal (Detail & Add) ─── */
+.modal{
+  position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(6px);
+  z-index:200;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;
+}
+.modal.open{display:flex}
+.modal-card{
+  background:var(--surface);border-radius:24px;width:100%;max-width:800px;
+  margin:auto;position:relative;box-shadow:var(--shadow-lg);animation:pop .3s cubic-bezier(.2,.8,.2,1);
+}
+.modal-card.sm{max-width:600px}
+@keyframes pop{from{opacity:0;transform:scale(.95) translateY(20px)}to{opacity:1;transform:none}}
+.modal-close{
+  position:absolute;top:16px;inset-inline-end:16px;width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.9);color:var(--text);display:grid;place-items:center;
+  font-size:20px;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,.1);transition:.2s;
+}
+.modal-close:hover{background:var(--danger);color:#fff;transform:rotate(90deg)}
+
+/* Detail Specific */
+.gallery{position:relative;aspect-ratio:16/9;background:#E2E8F0;border-radius:24px 24px 0 0;overflow:hidden}
+.gallery-main{width:100%;height:100%;object-fit:cover}
+.gallery-nav{
+  position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;
+  border-radius:50%;background:rgba(255,255,255,.9);color:var(--text);
+  display:grid;place-items:center;font-size:20px;box-shadow:0 4px 12px rgba(0,0,0,.1);transition:.2s;
+}
+.gallery-nav:hover{background:#fff}
+.gallery-prev{inset-inline-start:16px}
+.gallery-next{inset-inline-end:16px}
+.gallery-thumbs{position:absolute;bottom:16px;inset-inline:0;display:flex;gap:8px;justify-content:center;padding:0 16px;overflow-x:auto}
+.gallery-thumb{width:60px;height:45px;border-radius:8px;overflow:hidden;border:2px solid transparent;cursor:pointer;opacity:.7;transition:.2s}
+.gallery-thumb.active{border-color:var(--primary);opacity:1}
+.gallery-thumb img{width:100%;height:100%;object-fit:cover}
+
+.detail-body{padding:32px}
+.detail-title{font-size:28px;font-weight:900;margin-bottom:8px}
+.detail-sub{color:var(--muted);font-size:15px;margin-bottom:16px}
+.detail-price{font-size:32px;font-weight:900;color:var(--primary);margin-bottom:24px}
+.specs{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-bottom:24px}
+.spec{background:var(--bg);border-radius:16px;padding:16px;text-align:center;border:1px solid var(--border)}
+.spec span{font-size:13px;color:var(--muted);font-weight:700}
+.spec b{display:block;font-size:16px;margin-top:4px;font-weight:800}
+.desc-box{background:var(--bg);border-radius:16px;padding:20px;font-size:15px;color:var(--text);line-height:1.8;margin-bottom:24px;border:1px solid var(--border)}
+.seller{display:flex;align-items:center;gap:16px;background:var(--bg);border-radius:16px;padding:20px;border:1px solid var(--border)}
+.avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#3B82F6);color:#fff;display:grid;place-items:center;font-weight:900;font-size:22px}
+.seller-info b{display:block;font-size:18px;font-weight:800}
+.seller-info span{font-size:14px;color:var(--muted)}
+.contact-actions{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+.btn-contact{
+  flex:1;min-width:160px;padding:16px;border-radius:16px;font-weight:800;font-size:16px;
+  display:flex;align-items:center;justify-content:center;gap:10px;transition:.2s;
+}
+.btn-phone{background:var(--primary);color:#fff;box-shadow:0 4px 16px rgba(37,99,235,.3)}
+.btn-phone:hover{background:var(--primary-hover);transform:translateY(-2px)}
+.btn-wa{background:#25D366;color:#fff;box-shadow:0 4px 16px rgba(37,211,102,.3)}
+.btn-wa:hover{background:#1EA952;transform:translateY(-2px)}
+.btn-report{background:var(--surface-hover);color:var(--danger);border:1px solid #FECACA;flex:0;min-width:auto;padding:16px}
+.btn-report:hover{background:#FEE2E2}
+
+/* Add Form */
+.form-head{padding:32px 32px 16px}
+.form-head h2{font-size:24px;font-weight:900}
+.form-head p{color:var(--muted);font-size:15px;margin-top:4px}
+.form-wrap{padding:0 32px 32px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-grid .full{grid-column:1/-1}
+.field label{display:block;font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px}
+.field label span{color:var(--danger)}
+.field input,.field select,.field textarea{
+  width:100%;padding:14px;border-radius:12px;border:1px solid var(--border);
+  background:var(--bg);font-size:15px;outline:none;transition:.2s;font-weight:600;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 4px rgba(37,99,235,.1)}
+.field textarea{resize:vertical;min-height:100px}
+
+.photos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:12px;margin-bottom:12px}
+.photo-tile{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.photo-tile img{width:100%;height:100%;object-fit:cover}
+.photo-cover-badge{position:absolute;top:4px;inset-inline-start:4px;background:var(--primary);color:#fff;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px}
+.photo-remove{position:absolute;top:4px;inset-inline-end:4px;width:22px;height:22px;border-radius:50%;background:rgba(239,68,68,.9);color:#fff;display:grid;place-items:center;font-size:12px}
+.photo-remove:hover{background:var(--danger)}
+.photo-cover-btn{position:absolute;bottom:4px;inset-inline:4px;background:rgba(255,255,255,.9);color:var(--text);font-size:11px;font-weight:800;padding:4px;border-radius:4px;text-align:center;cursor:pointer}
+.photo-cover-btn:hover{background:var(--surface)}
+.photo-actions{display:flex;gap:10px;flex-wrap:wrap}
+.photo-btn{display:inline-flex;align-items:center;gap:6px;padding:12px 18px;border-radius:12px;background:var(--surface);border:1px dashed var(--border);font-size:14px;font-weight:700;color:var(--muted);transition:.2s}
+.photo-btn:hover{border-color:var(--primary);color:var(--primary);background:rgba(37,99,235,.05)}
+.photo-hint{font-size:12px;color:var(--muted);margin-inline-start:auto;align-self:center}
+.form-actions{display:flex;gap:12px;margin-top:24px}
+
+/* Empty State */
+.empty{text-align:center;padding:80px 20px;color:var(--muted);grid-column:1/-1}
+.empty-ico{font-size:64px;margin-bottom:16px;opacity:.5}
+.empty b{display:block;color:var(--text);font-size:20px;margin-bottom:8px}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);
+  background:var(--text);color:#fff;padding:14px 28px;border-radius:50px;
+  font-weight:700;font-size:15px;box-shadow:var(--shadow-lg);z-index:300;
+  transition:.3s cubic-bezier(.2,.8,.2,1);opacity:0;
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.err{background:var(--danger)}
+.toast.ok{background:var(--ok)}
+
+/* Responsive */
+@media(max-width:768px){
+  .form-grid{grid-template-columns:1fr}
+  .detail-body,.form-wrap,.form-head{padding-inline:20px}
+  .brand-name{display:none}
+  .topbar-inner{padding:12px 16px;gap:10px}
+  .search{order:10;flex-basis:100%;margin-top:4px}
+  .nav{flex:1;justify-content:flex-end}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-logo">🇩🇿</div>
+      <span class="brand-name" data-i18n="appName">سوق السيارات</span>
+    </div>
+    
+    <div class="search">
+      <input id="searchInput" type="search" data-i18n-ph="searchPlaceholder" placeholder="ابحث...">
+      <span class="search-ico">🔍</span>
+    </div>
+
+    <nav class="nav">
+      <select id="langSelect" class="lang-select" onchange="changeLang(this.value)">
+        <option value="ar">العربية</option>
+        <option value="zgh">ⵜⴰⵎⴰⵣⵉⵖⵜ</option>
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+
+      <button class="icon-btn active" id="navBrowse" title="Browse">🏠</button>
+      <button class="icon-btn" id="navFav" style="position:relative" title="Favorites">
+        ❤️<span class="badge-count" id="favCount" style="display:none">0</span>
+      </button>
+
+      <button class="btn-add" id="btnAdd">
+        <span>+</span> <span data-i18n="addListing">إعلان</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <!-- Quick Filters -->
+  <div class="filters-scroll" id="quickFilters">
+    <button class="chip active" data-filter="all" data-i18n="all">الكل</button>
+    <button class="chip" data-filter="brand:Renault">Renault</button>
+    <button class="chip" data-filter="brand:Peugeot">Peugeot</button>
+    <button class="chip" data-filter="brand:Dacia">Dacia</button>
+    <button class="chip" data-filter="brand:Toyota">Toyota</button>
+    <button class="chip" data-filter="brand:Hyundai">Hyundai</button>
+    <button class="chip" data-filter="brand:Kia">Kia</button>
+    <button class="chip" data-filter="fuel:diesel" data-i18n="fuelDiesel">ديزل</button>
+    <button class="chip" data-filter="fuel:gasoline" data-i18n="fuelGasoline">بنزين</button>
+    <button class="chip" id="btnOpenFilters">⚙️ <span data-i18n="filters">الفلاتر</span></button>
+  </div>
+
+  <!-- Results -->
+  <div class="results-head">
+    <div class="count"><span data-i18n="showing">عرض</span> <b id="resCount">0</b> <span data-i18n="car">سيارة</span></div>
+    <select id="sortSel" class="sort-select">
+      <option value="new" data-i18n="sortNew">الأحدث</option>
+      <option value="cheap" data-i18n="sortCheap">الأرخص</option>
+      <option value="expensive" data-i18n="sortExpensive">الأغلى</option>
+      <option value="km" data-i18n="sortKm">الأقل كم</option>
+    </select>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- Bottom Sheet (Advanced Filters) -->
+<div class="overlay" id="sheetOverlay"></div>
+<div class="bottom-sheet" id="bottomSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <h3 data-i18n="filters">الفلاتر</h3>
+    <span class="sheet-close" id="btnCloseFilters">✕</span>
+  </div>
+  
+  <div class="filter-group">
+    <label data-i18n="brand">الماركة</label>
+    <select id="fBrand"></select>
+  </div>
+  <div class="filter-group">
+    <label data-i18n="city">الولاية</label>
+    <select id="fCity"></select>
+  </div>
+  <div class="filter-group">
+    <label data-i18n="fuel">الوقود</label>
+    <select id="fFuel"></select>
+  </div>
+  <div class="filter-group">
+    <label data-i18n="gear">ناقل الحركة</label>
+    <select id="fGear"></select>
+  </div>
+  <div class="filter-group row2">
+    <div>
+      <label data-i18n="yearFrom">السنة من</label>
+      <input id="fYear" type="number" min="1980" max="2026" placeholder="2015">
+    </div>
+    <div>
+      <label data-i18n="price">السعر</label>
+      <div class="row2">
+        <input id="fPriceMin" type="number" min="0" data-i18n-ph="from" placeholder="من">
+        <input id="fPriceMax" type="number" min="0" data-i18n-ph="to" placeholder="إلى">
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet-actions">
+    <button class="btn-outline" id="resetFilters" data-i18n="clearAll">مسح</button>
+    <button class="btn-solid" id="applyFilters" data-i18n="apply">تطبيق</button>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal" id="detailModal">
+  <div class="modal-card" id="detailCard"></div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal" id="addModal">
+  <div class="modal-card sm">
+    <button class="modal-close" id="closeAdd">✕</button>
+    <div class="form-head">
+      <h2 data-i18n="addTitle">أضف إعلانك</h2>
+      <p data-i18n="addSub">انشر سيارتك مجاناً</p>
+    </div>
+    <div class="form-wrap">
+      <form id="addForm">
+        <div class="form-grid">
+          <div class="field full">
+            <label data-i18n="fPhotos">صور السيارة (حتى 5)</label>
+            <div class="photos-grid" id="photosGrid"></div>
+            <div class="photo-actions">
+              <button type="button" class="photo-btn" id="btnCamera">📷 <span data-i18n="takePhoto">كاميرا</span></button>
+              <button type="button" class="photo-btn" id="btnGallery">🖼️ <span data-i18n="chooseFromGallery">المعرض</span></button>
+              <span class="photo-hint">الأولى غلاف</span>
+            </div>
+            <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
+            <input type="file" id="galleryInput" accept="image/*" multiple hidden>
+          </div>
+          
+          <div class="field">
+            <label data-i18n="fBrand">الماركة <span>*</span></label>
+            <select name="brand" id="fBrand2" required></select>
+          </div>
+          <div class="field">
+            <label data-i18n="fModel">الموديل <span>*</span></label>
+            <input name="model" required maxlength="40" placeholder="Clio 4">
+          </div>
+          <div class="field">
+            <label data-i18n="fYear">السنة <span>*</span></label>
+            <input name="year" type="number" min="1980" max="2026" required placeholder="2019">
+          </div>
+          <div class="field">
+            <label data-i18n="fPrice">السعر (دج) <span>*</span></label>
+            <input name="price" type="number" min="1" required placeholder="2500000">
+          </div>
+          <div class="field">
+            <label data-i18n="fKm">الكيلومترات <span>*</span></label>
+            <input name="km" type="number" min="0" required placeholder="62000">
+          </div>
+          <div class="field">
+            <label data-i18n="fCity">الولاية <span>*</span></label>
+            <select name="city" id="fCity2" required></select>
+          </div>
+          <div class="field">
+            <label data-i18n="fFuel">الوقود <span>*</span></label>
+            <select name="fuel" id="fFuel2" required></select>
+          </div>
+          <div class="field">
+            <label data-i18n="fGear">ناقل الحركة <span>*</span></label>
+            <select name="gear" id="fGear2" required></select>
+          </div>
+          <div class="field">
+            <label data-i18n="fName">اسمك <span>*</span></label>
+            <input name="name" required placeholder="كريم بلقاسم" maxlength="40">
+          </div>
+          <div class="field">
+            <label data-i18n="fPhone">رقم الهاتف <span>*</span></label>
+            <input name="phone" type="tel" required maxlength="10" placeholder="0555123456">
+          </div>
+          <div class="field full">
+            <label data-i18n="fDesc">الوصف</label>
+            <textarea name="desc" maxlength="500" placeholder="..."></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-outline" id="cancelAdd" data-i18n="cancel">إلغاء</button>
+          <button type="submit" class="btn-solid" data-i18n="publish">نشر</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+
+/* ═══════════ 1) I18N Dictionary (5 Languages) ═══════════ */
+const I18N = {
+  ar: {
+    appName:'سوق السيارات', searchPlaceholder:'ابحث عن سيارة، ماركة، أو ولاية...',
+    addListing:'إعلان', filters:'الفلاتر', apply:'تطبيق', clearAll:'مسح',
+    all:'الكل', brand:'الماركة', city:'الولاية', fuel:'الوقود', gear:'ناقل الحركة',
+    yearFrom:'السنة من', price:'السعر', from:'من', to:'إلى', showing:'عرض', car:'سيارة',
+    sortNew:'الأحدث', sortCheap:'الأرخص', sortExpensive:'الأغلى', sortKm:'الأقل كم',
+    newBadge:'جديد', km:'كم', year:'السنة', sellerPrivate:'بائع خاص',
+    whatsapp:'واتساب', report:'إبلاغ', addTitle:'أضف إعلانك', addSub:'انشر سيارتك مجاناً',
+    fBrand:'الماركة', fModel:'الموديل', fYear:'السنة', fPrice:'السعر', fKm:'الكيلومترات',
+    fFuel:'الوقود', fGear:'ناقل الحركة', fCity:'الولاية', fName:'اسمك', fPhone:'رقم الهاتف',
+    fDesc:'الوصف', fPhotos:'صور السيارة', takePhoto:'كاميرا', chooseFromGallery:'المعرض',
+    cancel:'إلغاء', publish:'نشر', emptyTitle:'لا توجد سيارات مطابقة', emptySub:'جرّب تغيير الفلاتر',
+    today:'اليوم', yesterday:'أمس', daysAgo:'منذ {n} أيام',
+    phoneInvalid:'رقم الهاتف غير صالح (يبدأ بـ 05، 06، 07)', published:'تم النشر بنجاح',
+    fillRequired:'يرجى ملء الحقول المطلوبة', maxImages:'الحد الأقصى 5 صور',
+    fuelGasoline:'بنزين', fuelDiesel:'ديزل', fuelElectric:'كهربائي', fuelHybrid:'هجين', fuelLpg:'غاز',
+    gearManual:'يدوي', gearAuto:'أوتوماتيك',
+    selectBrand:'اختر الماركة', selectCity:'اختر الولاية', allBrands:'كل الماركات', allCities:'كل الولايات'
+  },
+  zgh: {
+    appName:'ⵜⴰⵎⵙⵓⴽⵜ ⵏ ⵜⵎⵓⴱⵉⵍⴰⵜ', searchPlaceholder:'ⵔⵣⵓ ⵖⴼ ⵜⵎⵓⴱⵉⵍⴰⵜ...',
+    addListing:'ⵓⵔⴰⵔ', filters:'ⵉⵙⵎⵏⵉⴷⵏ', apply:'ⵙⵎⵔⵙ', clearAll:'ⵙⴼⴹ',
+    all:'ⴰⴽⴽⵯ', brand:'ⵜⴰⵎⴰⵜⴰⵔⵜ', city:'ⵜⴰⵎⴰⵏⴰⵖⵜ', fuel:'ⴰⵎⴰⵏ', gear:'ⵜⴰⵎⵙⴽⴰⵍⴰ',
+    yearFrom:'ⴰⵙⴳⴳⵯⴰⵙ ⵙⴳ', price:'ⴰⵜⵉⴳ', from:'ⵙⴳ', to:'ⴰⵔ', showing:'ⵙⵎⴰⵍ', car:'ⵜⵎⵓⴱⵉⵍⴰ',
+    sortNew:'ⴰⵎⴰⵢⵏⵓ', sortCheap:'ⴰⵔⵅⵉⵙⵏ', sortExpensive:'ⴰⵣⵣⴰⵢⵏ', sortKm:'ⴰⵎⴰⵣⵣⴰⵏ',
+    newBadge:'ⴰⵎⴰⵢⵏⵓ', km:'ⴽⵎ', year:'ⴰⵙⴳⴳⵯⴰⵙ', sellerPrivate:'ⴰⵎⵣⵏⵣⴰⵢ',
+    whatsapp:'ⵡⴰⵜⵙⴰⴱ', report:'ⵙⵙⵉⵡⴹ', addTitle:'ⵔⵏⵓ ⵜⵓⵔⴰⵔⵜ', addSub:'ⵣⵏⵣ ⵜⵎⵓⴱⵉⵍⴰⵜ ⵏⴽ',
+    fBrand:'ⵜⴰⵎⴰⵜⴰⵔⵜ', fModel:'ⴰⵎⴻⴷⵢⴰ', fYear:'ⴰⵙⴳⴳⵯⴰⵙ', fPrice:'ⴰⵜⵉⴳ', fKm:'ⵉⴽⵉⵍⵓⵎⵉⵜⵔⵏ',
+    fFuel:'ⴰⵎⴰⵏ', fGear:'ⵜⴰⵎⵙⴽⴰⵍⴰ', fCity:'ⵜⴰⵎⴰⵏⴰⵖⵜ', fName:'ⵉⵙⵎ ⵏⴽ', fPhone:'ⵓⵟⵟⵓⵏ',
+    fDesc:'ⴰⵙⵙⵉⵡⴹ', fPhotos:'ⵜⵡⵍⴰⴼⵉⵏ', takePhoto:'ⵜⴰⴽⴰⵎⵉⵔⴰ', chooseFromGallery:'ⵜⴰⵙⵎⵉⵔⵜ',
+    cancel:'ⵙⵔ', publish:'ⵣⵏⵣ', emptyTitle:'ⵓⵔ ⵉⵍⵍⴰ ⵓⵍⴰ ⵢⴰⵏ', emptySub:'ⵙⵎⵔⵙ ⵉⵙⵎⵏⵉⴷⵏ ⵢⴰⴹⵏⵉⵏ',
+    today:'ⴰⵙⵙⴰ', yesterday:'ⵉⴹⴳⴰⵎⵎ', daysAgo:'ⵙⴳ {n} ⵓⵙⵙⴰⵏ',
+    phoneInvalid:'ⵓⵟⵟⵓⵏ ⵓⵔ ⵉⵣⵔⵉ', published:'ⵜⵜⵓⵣⵏⵣ',
+    fillRequired:'ⵛⵛⴰⵔ ⴰⴽⴽⵯ ⵉⴳⵔⴰⵏ', maxImages:'5 ⵜⵡⵍⴰⴼⵉⵏ ⴷ ⵜⴰⵎⴰⵜⴰⵔⵜ',
+    fuelGasoline:'ⴰⵙⵙⴰⵏ', fuelDiesel:'ⴷⵉⵣⵉⵍ', fuelElectric:'ⵜⵉⵔⵉⵜ', fuelHybrid:'ⵀⵉⴱⵔⵉⴷ', fuelLpg:'ⴳⴰⵣ',
+    gearManual:'ⴰⴼⵓⵙ', gearAuto:'ⵓⵜⵓⵎⴰⵜⵉⴽ',
+    selectBrand:'ⵙⵜⵉ ⵜⴰⵎⴰⵜⴰⵔⵜ', selectCity:'ⵙⵜⵉ ⵜⴰⵎⴰⵏⴰⵖⵜ', allBrands:'ⴰⴽⴽⵯ ⵜⵎⴰⵜⴰⵔⵉⵏ', allCities:'ⴰⴽⴽⵯ ⵜⵎⴰⵏⴰⵖⵉⵏ'
+  },
+  fr: {
+    appName:'AutoDz', searchPlaceholder:'Rechercher voiture, marque, wilaya...',
+    addListing:'Publier', filters:'Filtres', apply:'Appliquer', clearAll:'Effacer',
+    all:'Tout', brand:'Marque', city:'Wilaya', fuel:'Carburant', gear:'Transmission',
+    yearFrom:'Année depuis', price:'Prix', from:'De', to:'À', showing:'Affichage', car:'voitures',
+    sortNew:'Plus récentes', sortCheap:'Moins chères', sortExpensive:'Plus chères', sortKm:'Moins de km',
+    newBadge:'Nouveau', km:'km', year:'Année', sellerPrivate:'Particulier',
+    whatsapp:'WhatsApp', report:'Signaler', addTitle:'Publier une annonce', addSub:'Vendez gratuitement',
+    fBrand:'Marque', fModel:'Modèle', fYear:'Année', fPrice:'Prix', fKm:'Kilométrage',
+    fFuel:'Carburant', fGear:'Transmission', fCity:'Wilaya', fName:'Votre nom', fPhone:'Téléphone',
+    fDesc:'Description', fPhotos:'Photos', takePhoto:'Caméra', chooseFromGallery:'Galerie',
+    cancel:'Annuler', publish:'Publier', emptyTitle:'Aucune voiture trouvée', emptySub:'Essayez d\'autres filtres',
+    today:'Aujourd\'hui', yesterday:'Hier', daysAgo:'Il y a {n} jours',
+    phoneInvalid:'Numéro invalide (05, 06, 07)', published:'Annonce publiée',
+    fillRequired:'Remplissez les champs requis', maxImages:'Maximum 5 photos',
+    fuelGasoline:'Essence', fuelDiesel:'Diesel', fuelElectric:'Électrique', fuelHybrid:'Hybride', fuelLpg:'GPL',
+    gearManual:'Manuelle', gearAuto:'Automatique',
+    selectBrand:'Choisir marque', selectCity:'Choisir wilaya', allBrands:'Toutes les marques', allCities:'Toutes les wilayas'
+  },
+  en: {
+    appName:'AutoDz', searchPlaceholder:'Search car, brand, or wilaya...',
+    addListing:'Post', filters:'Filters', apply:'Apply', clearAll:'Clear',
+    all:'All', brand:'Brand', city:'Wilaya', fuel:'Fuel', gear:'Transmission',
+    yearFrom:'Year from', price:'Price', from:'From', to:'To', showing:'Showing', car:'cars',
+    sortNew:'Newest', sortCheap:'Cheapest', sortExpensive:'Most expensive', sortKm:'Lowest km',
+    newBadge:'New', km:'km', year:'Year', sellerPrivate:'Private seller',
+    whatsapp:'WhatsApp', report:'Report', addTitle:'Post a listing', addSub:'Sell for free',
+    fBrand:'Brand', fModel:'Model', fYear:'Year', fPrice:'Price', fKm:'Mileage',
+    fFuel:'Fuel', fGear:'Transmission', fCity:'Wilaya', fName:'Your name', fPhone:'Phone',
+    fDesc:'Description', fPhotos:'Photos', takePhoto:'Camera', chooseFromGallery:'Gallery',
+    cancel:'Cancel', publish:'Publish', emptyTitle:'No cars found', emptySub:'Try changing filters',
+    today:'Today', yesterday:'Yesterday', daysAgo:'{n} days ago',
+    phoneInvalid:'Invalid phone (05, 06, 07)', published:'Listing published',
+    fillRequired:'Fill required fields', maxImages:'Max 5 photos',
+    fuelGasoline:'Gasoline', fuelDiesel:'Diesel', fuelElectric:'Electric', fuelHybrid:'Hybrid', fuelLpg:'LPG',
+    gearManual:'Manual', gearAuto:'Automatic',
+    selectBrand:'Select brand', selectCity:'Select wilaya', allBrands:'All brands', allCities:'All wilayas'
+  },
+  zh: {
+    appName:'AutoDz', searchPlaceholder:'搜索汽车，品牌或省份...',
+    addListing:'发布', filters:'筛选', apply:'应用', clearAll:'清除',
+    all:'全部', brand:'品牌', city:'省份', fuel:'燃料', gear:'变速箱',
+    yearFrom:'年份起', price:'价格', from:'从', to:'到', showing:'显示', car:'辆',
+    sortNew:'最新', sortCheap:'最便宜', sortExpensive:'最贵', sortKm:'最低里程',
+    newBadge:'新', km:'公里', year:'年份', sellerPrivate:'私人卖家',
+    whatsapp:'WhatsApp', report:'举报', addTitle:'发布广告', addSub:'免费出售您的汽车',
+    fBrand:'品牌', fModel:'型号', fYear:'年份', fPrice:'价格', fKm:'里程',
+    fFuel:'燃料', fGear:'变速箱', fCity:'省份', fName:'您的姓名', fPhone:'电话',
+    fDesc:'描述', fPhotos:'照片', takePhoto:'相机', chooseFromGallery:'图库',
+    cancel:'取消', publish:'发布', emptyTitle:'未找到汽车', emptySub:'尝试更改筛选条件',
+    today:'今天', yesterday:'昨天', daysAgo:'{n}天前',
+    phoneInvalid:'电话号码无效 (05, 06, 07)', published:'发布成功',
+    fillRequired:'请填写必填项', maxImages:'最多5张照片',
+    fuelGasoline:'汽油', fuelDiesel:'柴油', fuelElectric:'电动', fuelHybrid:'混合动力', fuelLpg:'液化气',
+    gearManual:'手动', gearAuto:'自动',
+    selectBrand:'选择品牌', selectCity:'选择省份', allBrands:'所有品牌', allCities:'所有省份'
+  }
+};
+
+let lang = localStorage.getItem('dz_lang') || 'ar';
+const t = k => (I18N[lang] && I18N[lang][k]) || k;
+
+/* ═══════════ 2) Data (58 Wilayas & Brands) ═══════════ */
+const WILAYAS = [
+  'أدرار','الشلف','الأغواط','أم البواقي','باتنة','بجاية','بسكرة','بشار','البليدة','البويرة',
+  'تمنراست','تبسة','تلمسان','تيارت','تيزي وزو','الجزائر','الجلفة','جيجل','سطيف','سعيدة',
+  'سكيكدة','سيدي بلعباس','عنابة','قالمة','قسنطينة','المدية','مستغانم','المسيلة','معسكر','ورقلة',
+  'وهران','البيض','إليزي','برج بوعريريج','بومرداس','الطارف','تندوف','تيسمسيلت','الوادي','خنشلة',
+  'سوق أهراس','تيبازة','ميلة','عين الدفلى','النعامة','عين تموشنت','غرداية','غليزان','تيميمون',
+  'برج باجي مختار','أولاد جلال','بني عباس','عين صالح','عين قزام','تقرت','جانت','المغير','المنيعة'
+];
+
+const BRANDS = ['Renault','Peugeot','Citroën','Volkswagen','Hyundai','Kia','Toyota','Nissan','Chevrolet','Mercedes','BMW','Audi','Škoda','Fiat','Dacia','Suzuki','Mitsubishi','Honda','Chery','Geely','BYD','Ford','Opel','Seat','Lada','MG','JAC','Land Rover','Volvo','Porsche','Tesla'];
+
+const FUELS = ['gasoline','diesel','electric','hybrid','lpg'];
+const GEARS = ['manual','auto'];
+
+/* ═══════════ 3) State & Storage ═══════════ */
+const CARS_KEY = 'dz_cars_v1';
+const FAV_KEY = 'dz_favs_v1';
+
+let cars = [];
+let favs = new Set();
+
+const state = {
+  view: 'browse', q: '', brand: '', city: '', fuel: '', gear: '',
+  yearMin: '', priceMin: '', priceMax: '', sort: 'new'
+};
+
+function initData() {
+  const saved = localStorage.getItem(CARS_KEY);
+  if (saved) {
+    cars = JSON.parse(saved);
+  } else {
+    const now = Date.now();
+    cars = [
+      {id:'1', brand:'Renault', model:'Clio 4', year:2019, price:2450000, km:62000, fuel:'gasoline', gear:'manual', city:'وهران', name:'كريم بلقاسم', phone:'0555123456', desc:'سيارة بحالة ممتازة، صيانة منتظمة، بدون حوادث.', images:[], createdAt:now-86400000*2},
+      {id:'2', brand:'Peugeot', model:'208', year:2020, price:3100000, km:41000, fuel:'gasoline', gear:'auto', city:'الجزائر', name:'سامية حمداني', phone:'0661778899', desc:'استعمال شخصي، دفتر الصيانة كامل.', images:[], createdAt:now-86400000*1},
+      {id:'3', brand:'Hyundai', model:'Accent', year:2021, price:3400000, km:28000, fuel:'gasoline', gear:'auto', city:'قسنطينة', name:'أمين بوعزيز', phone:'0555445566', desc:'شبه جديدة، مازالت تحت الضمان.', images:[], createdAt:now-86400000*5},
+      {id:'4', brand:'Dacia', model:'Logan', year:2019, price:1750000, km:96000, fuel:'diesel', gear:'manual', city:'سطيف', name:'رشيد عمراني', phone:'0772334455', desc:'سيارة عملية واقتصادية للعائلات.', images:[], createdAt:now-86400000*3},
+      {id:'5', brand:'Toyota', model:'Yaris', year:2020, price:3250000, km:52000, fuel:'gasoline', gear:'auto', city:'عنابة', name:'فاطمة الزهراء', phone:'0699887766', desc:'سيارة موثوقة، صيانة دورية.', images:[], createdAt:now-86400000*7},
+      {id:'6', brand:'Volkswagen', model:'Golf 7', year:2017, price:4200000, km:105000, fuel:'diesel', gear:'auto', city:'وهران', name:'مهدي شريفي', phone:'0556677889', desc:'نسخة هاي لاين، فتحة سقف وشاشة.', images:[], createdAt:now-86400000*9},
+      {id:'7', brand:'Kia', model:'Rio', year:2020, price:2900000, km:47000, fuel:'gasoline', gear:'auto', city:'تلمسان', name:'نادية بوزيد', phone:'0661223344', desc:'استعمال نسائي، نظيفة جداً.', images:[], createdAt:now-86400000*6},
+      {id:'8', brand:'Mercedes', model:'C220', year:2015, price:6800000, km:142000, fuel:'diesel', gear:'auto', city:'الجزائر', name:'عبد الرحمان قاسمي', phone:'0558990011', desc:'سيارة فخمة، صيانة كاملة في الوكيل.', images:[], createdAt:now-86400000*8},
+      {id:'9', brand:'Renault', model:'Duster', year:2020, price:3150000, km:66000, fuel:'diesel', gear:'manual', city:'تيزي وزو', name:'ماسينيسا آيت', phone:'0553445566', desc:'سيارة 4x4 ممتازة للطرق الوعرة.', images:[], createdAt:now-86400000*10},
+      {id:'10', brand:'Chery', model:'Tiggo 4', year:2022, price:2750000, km:19000, fuel:'gasoline', gear:'auto', city:'وهران', name:'إلياس بن عيسى', phone:'0665443322', desc:'شبه جديدة، كاميرا وحساسات.', images:[], createdAt:now-86400000*1}
+    ];
+    saveCars();
+  }
+
+  const savedFavs = localStorage.getItem(FAV_KEY);
+  if (savedFavs) favs = new Set(JSON.parse(savedFavs));
+}
+
+function saveCars() {
+  try { localStorage.setItem(CARS_KEY, JSON.stringify(cars)); } catch(e) { toast('Memory Full', 'err'); }
+}
+function saveFavs() {
+  localStorage.setItem(FAV_KEY, JSON.stringify([...favs]));
+}
+
+/* ═══════════ 4) Helpers ═══════════ */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const hash = s => { let h=0; for(const c of s) h=(h*31+c.charCodeAt(0))>>>0; return h; };
+const fmtPrice = n => n.toLocaleString('en-US') + ' دج';
+const timeAgo = (ts) => {
+  const d = Math.floor((Date.now()-ts)/86400000);
+  if(d < 1) return t('today');
+  if(d === 1) return t('yesterday');
+  return t('daysAgo').replace('{n}', d);
+};
+function toast(msg, type='') {
+  const el = $('#toast');
+  el.textContent = msg;
+  el.className = 'toast show ' + type;
+  clearTimeout(el._tm);
+  el._tm = setTimeout(()=> el.className = 'toast ' + type, 3000);
+}
+function svgPlaceholder(brand, model) {
+  const hues = [[210,80,60],[150,60,50],[30,90,60],[260,60,60],[190,70,50]];
+  const h = hues[hash(brand + model) % hues.length];
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="hsl(${h[0]},${h[1]}%,${h[2]}%)"/>
+      <stop offset="1" stop-color="hsl(${h[0]+20},${h[1]}%,${h[2]-15}%)"/>
+    </linearGradient></defs>
+    <rect width="400" height="300" fill="url(#g)"/>
+    <circle cx="330" cy="60" r="80" fill="rgba(255,255,255,.1)"/>
+    <circle cx="70" cy="260" r="60" fill="rgba(255,255,255,.1)"/>
+    <g transform="translate(96,120)">
+      <path fill="rgba(255,255,255,.95)" d="M18 52h164a10 10 0 0 0 10-10v-9a16 16 0 0 0-12-15.5l-24-6a70 70 0 0 0-22-4h-40a70 70 0 0 0-22 4l-24 6A16 16 0 0 0 8 33v9a10 10 0 0 0 10 10z"/>
+      <circle cx="52" cy="58" r="14" fill="rgba(15,23,42,.8)"/>
+      <circle cx="148" cy="58" r="14" fill="rgba(15,23,42,.8)"/>
+      <circle cx="52" cy="58" r="6" fill="rgba(255,255,255,.6)"/>
+      <circle cx="148" cy="58" r="6" fill="rgba(255,255,255,.6)"/>
+    </g>
+  </svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
+/* ═══════════ 5) Language & UI Updates ═══════════ */
+function changeLang(l) {
+  lang = l;
+  localStorage.setItem('dz_lang', lang);
+  applyI18n();
+}
+
+function applyI18n() {
+  document.documentElement.lang = lang === 'zgh' ? 'zgh' : lang;
+  document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+  $('#langSelect').value = lang;
+
+  $$('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    if(I18N[lang][k]) el.textContent = I18N[lang][k];
+  });
+  $$('[data-i18n-ph]').forEach(el => {
+    const k = el.dataset.i18nPh;
+    if(I18N[lang][k]) el.placeholder = I18N[lang][k];
+  });
+
+  buildFilters();
+  render();
+}
+
+/* ═══════════ 6) Build Filter Selects ═══════════ */
+function buildFilters() {
+  // Bottom sheet selects
+  $('#fBrand').innerHTML = `<option value="">${t('allBrands')}</option>` + BRANDS.map(b => `<option value="${b}" ${state.brand===b?'selected':''}>${b}</option>`).join('');
+  $('#fCity').innerHTML = `<option value="">${t('allCities')}</option>` + WILAYAS.map((w,i) => `<option value="${w}" ${state.city===w?'selected':''}>${w}</option>`).join('');
+  $('#fFuel').innerHTML = `<option value="">${t('all')}</option>` + FUELS.map(f => `<option value="${f}" ${state.fuel===f?'selected':''}>${t('fuel'+f.charAt(0).toUpperCase()+f.slice(1))}</option>`).join('');
+  $('#fGear').innerHTML = `<option value="">${t('all')}</option>` + GEARS.map(g => `<option value="${g}" ${state.gear===g?'selected':''}>${t('gear'+g.charAt(0).toUpperCase()+g.slice(1))}</option>`).join('');
+  
+  // Form selects
+  $('#fBrand2').innerHTML = `<option value="">${t('selectBrand')}</option>` + BRANDS.map(b => `<option value="${b}">${b}</option>`).join('');
+  $('#fCity2').innerHTML = `<option value="">${t('selectCity')}</option>` + WILAYAS.map(w => `<option value="${w}">${w}</option>`).join('');
+  $('#fFuel2').innerHTML = FUELS.map(f => `<option value="${f}">${t('fuel'+f.charAt(0).toUpperCase()+f.slice(1))}</option>`).join('');
+  $('#fGear2').innerHTML = GEARS.map(g => `<option value="${g}">${t('gear'+g.charAt(0).toUpperCase()+g.slice(1))}</option>`).join('');
+}
+
+/* ═══════════ 7) Render Cards ═══════════ */
+function getFilteredCars() {
+  let list = [...cars];
+  if(state.view === 'fav') list = list.filter(c => favs.has(c.id));
+  if(state.brand) list = list.filter(c => c.brand === state.brand);
+  if(state.city) list = list.filter(c => c.city === state.city);
+  if(state.fuel) list = list.filter(c => c.fuel === state.fuel);
+  if(state.gear) list = list.filter(c => c.gear === state.gear);
+  if(state.yearMin) list = list.filter(c => c.year >= +state.yearMin);
+  if(state.priceMin) list = list.filter(c => c.price >= +state.priceMin);
+  if(state.priceMax) list = list.filter(c => c.price <= +state.priceMax);
+  
+  if(state.q) {
+    const q = state.q.toLowerCase();
+    list = list.filter(c => `${c.brand} ${c.model} ${c.city} ${c.year} ${c.name}`.toLowerCase().includes(q));
+  }
+
+  if(state.sort === 'new') list.sort((a,b) => b.createdAt - a.createdAt);
+  else if(state.sort === 'cheap') list.sort((a,b) => a.price - b.price);
+  else if(state.sort === 'expensive') list.sort((a,b) => b.price - a.price);
+  else if(state.sort === 'km') list.sort((a,b) => a.km - b.km);
+
+  return list;
+}
+
+function render() {
+  const list = getFilteredCars();
+  $('#resCount').textContent = list.length;
+  $('#favCount').textContent = favs.size;
+  $('#favCount').style.display = favs.size ? 'grid' : 'none';
+
+  const grid = $('#grid');
+  if(list.length === 0) {
+    grid.innerHTML = `<div class="empty">
+      <div class="empty-ico">🚗</div>
+      <b>${t('emptyTitle')}</b>
+      <div>${t('emptySub')}</div>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(c => {
+    const img = (c.images && c.images[0]) || svgPlaceholder(c.brand, c.model);
+    const isNew = (Date.now() - c.createdAt) < 86400000 * 3;
+    const isFav = favs.has(c.id);
+    
+    return `<article class="card" data-id="${c.id}">
+      <div class="card-img">
+        <img src="${img}" alt="${esc(c.brand)}" loading="lazy">
+        ${isNew ? `<span class="new-badge">${t('newBadge')}</span>` : ''}
+        <span class="price-tag">${fmtPrice(c.price)}</span>
+      </div>
+      <div class="card-body">
+        <h3>${esc(c.brand)} ${esc(c.model)}</h3>
+        <div class="meta">
+          <span>${c.year}</span> <span class="dot"></span>
+          <span>${c.km.toLocaleString()} ${t('km')}</span> <span class="dot"></span>
+          <span>${t('fuel'+c.fuel.charAt(0).toUpperCase()+c.fuel.slice(1))}</span>
+        </div>
+        <div class="card-foot">
+          <span class="city-label">📍 ${esc(c.city)}</span>
+          <button class="fav-btn ${isFav?'on':''}" data-fav="${c.id}">
+            ${isFav?'❤️':'🤍'}
+          </button>
+        </div>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+/* ═══════════ 8) Detail Modal ═══════════ */
+let currentCar = null;
+let currentImgIdx = 0;
+
+function openDetail(id) {
+  currentCar = cars.find(c => c.id === id);
+  if(!currentCar) return;
+  currentImgIdx = 0;
+  renderDetail();
+  $('#detailModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function renderDetail() {
+  const c = currentCar;
+  const imgs = (c.images && c.images.length) ? c.images : [svgPlaceholder(c.brand, c.model)];
+  const mainImg = imgs[currentImgIdx];
+  const isFav = favs.has(c.id);
+  const phoneMasked = c.phone.slice(0,2) + ' ** ** **';
+  const waLink = 'https://wa.me/213' + c.phone.replace(/^0/, '');
+
+  $('#detailCard').innerHTML = `
+    <button class="modal-close" id="closeDetail">✕</button>
+    <div class="gallery">
+      <img class="gallery-main" src="${mainImg}">
+      ${imgs.length > 1 ? `
+        <button class="gallery-nav gallery-prev" id="prevImg">‹</button>
+        <button class="gallery-nav gallery-next" id="nextImg">›</button>
+        <div class="gallery-thumbs">
+          ${imgs.map((im,i) => `<div class="gallery-thumb ${i===currentImgIdx?'active':''}" data-idx="${i}"><img src="${im}"></div>`).join('')}
+        </div>
+      ` : ''}
+    </div>
+    <div class="detail-body">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+        <div>
+          <div class="detail-title">${esc(c.brand)} ${esc(c.model)}</div>
+          <div class="detail-sub">${c.year} · ${c.km.toLocaleString()} ${t('km')} · ${esc(c.city)} · ${timeAgo(c.createdAt)}</div>
+        </div>
+        <button class="fav-btn ${isFav?'on':''}" id="detailFav" style="width:48px;height:48px;font-size:22px">${isFav?'❤️':'🤍'}</button>
+      </div>
+      <div class="detail-price">${fmtPrice(c.price)}</div>
+      
+      <div class="specs">
+        <div class="spec"><span>${t('year')}</span><b>${c.year}</b></div>
+        <div class="spec"><span>${t('fKm')}</span><b>${c.km.toLocaleString()} ${t('km')}</b></div>
+        <div class="spec"><span>${t('fuel')}</span><b>${t('fuel'+c.fuel.charAt(0).toUpperCase()+c.fuel.slice(1))}</b></div>
+        <div class="spec"><span>${t('gear')}</span><b>${t('gear'+c.gear.charAt(0).toUpperCase()+c.gear.slice(1))}</b></div>
+      </div>
+      
+      ${c.desc ? `<div class="desc-box">${esc(c.desc)}</div>` : ''}
+      
+      <div class="seller">
+        <div class="avatar">${esc(c.name.charAt(0))}</div>
+        <div class="seller-info">
+          <b>${esc(c.name)}</b>
+          <span>${t('sellerPrivate')} · ${esc(c.city)}</span>
+        </div>
+      </div>
+      
+      <div class="contact-actions">
+        <button class="btn-contact btn-phone" id="revealPhone">📞 <span>${phoneMasked}</span></button>
+        <a class="btn-contact btn-wa" href="${waLink}" target="_blank">💬 ${t('whatsapp')}</a>
+      </div>
+    </div>
+  `;
+
+  $('#closeDetail').onclick = closeDetail;
+  $('#revealPhone').onclick = function() {
+    const a = document.createElement('a');
+    a.href = 'tel:' + c.phone;
+    a.className = 'btn-contact btn-phone';
+    a.innerHTML = '📞 ' + c.phone;
+    this.replaceWith(a);
+  };
+  $('#detailFav').onclick = function() {
+    if(favs.has(c.id)) favs.delete(c.id); else favs.add(c.id);
+    saveFavs();
+    render();
+    this.className = `fav-btn ${favs.has(c.id)?'on':''}`;
+    this.textContent = favs.has(c.id)?'❤️':'🤍';
+  };
+  
+  if(imgs.length > 1) {
+    $('#prevImg').onclick = () => { currentImgIdx = (currentImgIdx - 1 + imgs.length) % imgs.length; renderDetail(); };
+    $('#nextImg').onclick = () => { currentImgIdx = (currentImgIdx + 1) % imgs.length; renderDetail(); };
+    $$('.gallery-thumb').forEach(el => el.onclick = () => { currentImgIdx = +el.dataset.idx; renderDetail(); });
+  }
+}
+
+function closeDetail() {
+  $('#detailModal').classList.remove('open');
+  document.body.style.overflow = '';
+  currentCar = null;
+}
+
+/* ═══════════ 9) Add Car Form ═══════════ */
+let pendingPhotos = [];
+
+function openAdd() {
+  pendingPhotos = [];
+  $('#addForm').reset();
+  renderPhotos();
+  $('#addModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAdd() {
+  $('#addModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function renderPhotos() {
+  const grid = $('#photosGrid');
+  grid.innerHTML = pendingPhotos.map((p, i) => `
+    <div class="photo-tile">
+      <img src="${p}">
+      ${i===0 ? `<span class="photo-cover-badge">${t('coverBadge')||'غلاف'}</span>` : ''}
+      <button type="button" class="photo-remove" onclick="removePhoto(${i})">✕</button>
+      ${i>0 ? `<button type="button" class="photo-cover-btn" onclick="setCover(${i})">⭐</button>` : ''}
+    </div>
+  `).join('');
+  
+  const full = pendingPhotos.length >= 5;
+  $('#btnCamera').disabled = full;
+  $('#btnGallery').disabled = full;
+}
+
+window.removePhoto = (i) => { pendingPhotos.splice(i, 1); renderPhotos(); };
+window.setCover = (i) => { const [p] = pendingPhotos.splice(i, 1); pendingPhotos.unshift(p); renderPhotos(); };
+
+function compressImage(file, maxW = 800, q = 0.75) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, maxW / img.width);
+        const cv = document.createElement('canvas');
+        cv.width = img.width * scale;
+        cv.height = img.height * scale;
+        cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+        resolve(cv.toDataURL('image/jpeg', q));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function handleFiles(files) {
+  for(let f of files) {
+    if(pendingPhotos.length >= 5) { toast(t('maxImages'), 'err'); break; }
+    if(!f.type.startsWith('image/')) continue;
+    const b64 = await compressImage(f);
+    pendingPhotos.push(b64);
+  }
+  renderPhotos();
+}
+
+/* ═══════════ 10) Events ═══════════ */
+function bindEvents() {
+  // Search
+  let sT;
+  $('#searchInput').addEventListener('input', e => {
+    clearTimeout(sT);
+    sT = setTimeout(() => { state.q = e.target.value.trim(); render(); }, 200);
+  });
+
+  // Quick Filter Chips
+  $$('.chip[data-filter]').forEach(chip => {
+    chip.onclick = () => {
+      const f = chip.dataset.filter;
+      $$('.chip').forEach(c => c.classList.remove('active'));
+      
+      if(f === 'all') {
+        state.brand = ''; state.fuel = ''; chip.classList.add('active');
+      } else {
+        chip.classList.add('active');
+        const [type, val] = f.split(':');
+        if(type === 'brand') state.brand = val;
+        if(type === 'fuel') state.fuel = val;
+      }
+      render();
+    };
+  });
+
+  // Bottom Sheet (Filters)
+  const toggleSheet = (open) => {
+    $('#bottomSheet').classList.toggle('open', open);
+    $('#sheetOverlay').classList.toggle('open', open);
+  };
+  $('#btnOpenFilters').onclick = () => toggleSheet(true);
+  $('#btnCloseFilters').onclick = () => toggleSheet(false);
+  $('#sheetOverlay').onclick = () => toggleSheet(false);
+  
+  $('#applyFilters').onclick = () => {
+    state.brand = $('#fBrand').value;
+    state.city = $('#fCity').value;
+    state.fuel = $('#fFuel').value;
+    state.gear = $('#fGear').value;
+    state.yearMin = $('#fYear').value;
+    state.priceMin = $('#fPriceMin').value;
+    state.priceMax = $('#fPriceMax').value;
+    toggleSheet(false);
+    render();
+  };
+
+  $('#resetFilters').onclick = () => {
+    state.brand = state.city = state.fuel = state.gear = state.yearMin = state.priceMin = state.priceMax = '';
+    buildFilters();
+    $('#fYear').value = ''; $('#fPriceMin').value = ''; $('#fPriceMax').value = '';
+    $$('.chip').forEach(c => c.classList.remove('active'));
+    $$('.chip[data-filter="all"]').forEach(c => c.classList.add('active'));
+    toggleSheet(false);
+    render();
+  };
+
+  // Sort
+  $('#sortSel').onchange = e => { state.sort = e.target.value; render(); };
+
+  // Navigation
+  $('#navBrowse').onclick = () => {
+    state.view = 'browse';
+    $('#navBrowse').classList.add('active'); $('#navFav').classList.remove('active');
+    render();
+  };
+  $('#navFav').onclick = () => {
+    state.view = 'fav';
+    $('#navFav').classList.add('active'); $('#navBrowse').classList.remove('active');
+    render();
+  };
+
+  // Grid Click
+  $('#grid').onclick = e => {
+    const fav = e.target.closest('[data-fav]');
+    if(fav) {
+      e.stopPropagation();
+      const id = fav.dataset.fav;
+      if(favs.has(id)) favs.delete(id); else favs.add(id);
+      saveFavs(); render(); return;
+    }
+    const card = e.target.closest('.card');
+    if(card) openDetail(card.dataset.id);
+  };
+
+  // Add
+  $('#btnAdd').onclick = openAdd;
+  $('#closeAdd').onclick = closeAdd;
+  $('#cancelAdd').onclick = closeAdd;
+  $('#btnCamera').onclick = () => $('#cameraInput').click();
+  $('#btnGallery').onclick = () => $('#galleryInput').click();
+  $('#cameraInput').onchange = e => { handleFiles([...e.target.files]); e.target.value = ''; };
+  $('#galleryInput').onchange = e => { handleFiles([...e.target.files]); e.target.value = ''; };
+
+  // Form Submit
+  $('#addForm').onsubmit = e => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const phone = (fd.get('phone')||'').trim();
+    
+    if(!/^0[5-7]\d{8}$/.test(phone)) {
+      toast(t('phoneInvalid'), 'err'); return;
+    }
+    
+    const newCar = {
+      id: 'u' + Date.now(),
+      brand: fd.get('brand'),
+      model: fd.get('model').trim(),
+      year: +fd.get('year'),
+      price: +fd.get('price'),
+      km: +fd.get('km'),
+      fuel: fd.get('fuel'),
+      gear: fd.get('gear'),
+      city: fd.get('city'),
+      name: fd.get('name').trim(),
+      phone,
+      desc: fd.get('desc').trim(),
+      images: pendingPhotos,
+      createdAt: Date.now()
+    };
+
+    if(!newCar.brand || !newCar.model || !newCar.name || !newCar.city) {
+      toast(t('fillRequired'), 'err'); return;
+    }
+
+    cars.unshift(newCar);
+    saveCars();
+    closeAdd();
+    
+    // Reset filters to show the new car
+    state.view = 'browse';
+    state.brand = ''; state.city = ''; state.fuel = '';
+    $$('.chip').forEach(c => c.classList.remove('active'));
+    $$('.chip[data-filter="all"]').forEach(c => c.classList.add('active'));
+    
+    render();
+    toast(t('published'), 'ok');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Escape key
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape') { closeDetail(); closeAdd(); toggleSheet(false); }
+  });
+}
+
+/* ═══════════ 11) Init ═══════════ */
+initData();
+applyI18n();
+bindEvents();
+
+/* ═══════════ 12) PWA ═══════════ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
